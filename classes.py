@@ -39,7 +39,7 @@ class Player:
 		for client in self.__clients:
 			client.update()
 			if client.is_ready_to_collect():
-				if self.__portfolio.withdraw(client.target):
+				if self.__cash <= client.target:
 					self.__rep -= client.reward * .5
 				else:
 					self.__rep += client.reward
@@ -48,8 +48,8 @@ class Player:
 	def __update_portfolio(self):
 		self.__cash += self.__portfolio.update_balances()
 	
-	def add_to_portfolio(self, transaction):
-		self.__portfolio.add_transaction(transaction)
+	def add_to_portfolio(self, market_name, transaction):
+		self.__portfolio.add_transaction(market_name, transaction)
 
 	def accept_client(self, client):
 		self.__clients.append(client)
@@ -85,14 +85,11 @@ class Portfolio:
 			self.__asset_value += ac.get_asset_value()
 		return cash
 	
-	def get_cash_value(self):
-		return self.__cash
-		
 	def get_asset_value(self):
 		return self.__asset_value
 	
 	def add_asset(self, asset_name):
-		self.__asset_classes[get_name] = Asset(asset_name)
+		self.__asset_classes[asset_name] = Asset(asset_name)
 	
 	def add_transaction(self, asset_name, transaction):
 		if not asset_name in self.__asset_classes:
@@ -100,7 +97,7 @@ class Portfolio:
 		self.__asset_classes[asset_name].add_transaction(transaction)
 	
 	def __repr__(self):
-		return f"assets: {self.get_asset_value()} cash: {self.get_cash_value()}"
+		return f"assets: {self.__asset_classes} value: {self.get_asset_value()}"
 
 class Asset:
 	def __init__(self, name):
