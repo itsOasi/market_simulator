@@ -1,5 +1,4 @@
 import classes
-import menu
 
 
 eco = classes.GlobalEconomy()

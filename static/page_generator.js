@@ -68,7 +68,14 @@ export class PageGenerator{
          img.onclick = callback; 
          img.alt = alt; 
          this.insert(img); 
-     } 
+     }
+	 addForm(id, action){
+		 let container = document.createElement("form")
+		 container.id = id
+		 container.action = action
+		 this.insert(container)
+		 this.addClass(id, "vbox")
+	 }
      addTextInput(id, placeholder, callback){ 
          // add a text input element 
          let input = document.createElement("input"); 
