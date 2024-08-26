@@ -1,5 +1,5 @@
 import random
-import os, time
+import os, time, helper
 
 class Client:
 	def __init__(self, principle, profit, reward, deadline):
@@ -34,6 +34,9 @@ class Player:
 	def update(self):
 		self.__update_portfolio()
 		self.__update_clients()
+
+	def get_portfolio(self):
+		return self.__portfolio
 
 	def __update_clients(self):
 		for client in self.__clients:
@@ -206,12 +209,15 @@ class GlobalEconomy:
 		self.__markets = self.__set_up_markets()
 		self.__growth = 1 # a value between 2 and 0 percent
 		self.is_running = True
-		
+
+	def get_player(self):
+		return self.__player
+	
 	def __set_up_markets(self):
 		markets = {
-			"stonks":Market("stonks", 50, 5, 100),
-			"crypto":Market("crypto", 1000, 5, 50),
-			"rlestate":Market("rlestate", 250000, 5, 10),
+			"stonks": Market("stonks", 50, 5, 100),
+			"crypto": Market("crypto", 1000, 5, 50),
+			"rlestate": Market("rlestate", 250000, 5, 10),
 		}
 		return markets
 	
@@ -220,6 +226,10 @@ class GlobalEconomy:
 			os.system("clear")
 			self.process()
 			time.sleep(1)
+
+	def step(self):
+		self.process()
+		return self.freeze()
 	
 	def process(self):
 		# calculate global economic growth
@@ -238,6 +248,13 @@ class GlobalEconomy:
 
 	def view_markets(self):
 		return self.__markets
+	
+	
+	def freeze(self):
+		markets = {}
+		for n, m in self.__markets.items():
+			markets[n] = str(m)
+		return helper.dict_to_json(markets)
 	
 	def view_growth(self):
 		return self.__growth

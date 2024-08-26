@@ -25,7 +25,8 @@ pyworker.init()
 
 let ecosim = {
 	init: async function(){
-		pyworker.load_module()
+		let loc = "./static/classes.py"
+		pyworker.write_module(loc, fetch(loc))
 	},
 	run_sim: async function(){
 		pyworker.run_line()
@@ -42,6 +43,7 @@ let ecosim = {
 }
 
 onmessage = async function (event){
+	alert("hi")
 	switch (event.data["cmd"]){
 		case "run":
 			// run a given command
