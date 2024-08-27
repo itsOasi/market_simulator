@@ -14,12 +14,21 @@ def port():
 def step():
     return app.step()
 
-@flask_app.route("/step", methods=["POST"])
+@flask_app.route("/buy", methods=["POST"])
 def buy():
+    print(request.form)
     market = request.form["market"]
     amount = request.form["amount"]
-    app.buy(market, amount)
-    return {"success":True}
+    print(market, amount)
+    return app.buy(market, amount)
+
+@flask_app.route("/sell", methods=["POST"])
+def sell():
+	print(request.form)
+	market = request.form["market"]	
+	amount = request.form["amount"]
+	print(market, amount)
+	return app.sell(market, amount)
 
 if __name__ == '__main__':
     flask_app.run(debug=True)

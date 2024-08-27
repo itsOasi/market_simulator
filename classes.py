@@ -83,7 +83,7 @@ class Portfolio:
 	def update_balances(self):
 		self.__asset_value = 0
 		cash = 0
-		for name, ac in self.__asset_classes:
+		for name, ac in self.__asset_classes.items():
 			cash += ac.update_transactions()
 			self.__asset_value += ac.get_asset_value()
 		return cash
@@ -100,7 +100,7 @@ class Portfolio:
 		self.__asset_classes[asset_name].add_transaction(transaction)
 	
 	def __repr__(self):
-		return f"assets: {self.__asset_classes} value: {self.get_asset_value()}"
+		return f"assets: {[f'{name} {ac.get_asset_value()}' for name, ac in self.__asset_classes.items()]} value: {self.get_asset_value()}"
 
 class Asset:
 	def __init__(self, name):
@@ -171,7 +171,7 @@ class Transaction:
 		return self.__unit_price
 	
 	def get_value(self):
-		return self.__quantity * self.__unit_price
+		return float(self.__quantity) * float(self.__unit_price)
 
 class Market:
 	def __init__(self, name, starting_value, volatility, liquidity):
@@ -226,6 +226,8 @@ class GlobalEconomy:
 			os.system("clear")
 			self.process()
 			time.sleep(1)
+			print(f"{list(self.view_markets().values())}\n{self.__player}")
+			print(f"'b'+market name to buy\n's'+market name to sell")
 
 	def step(self):
 		self.process()
@@ -240,8 +242,7 @@ class GlobalEconomy:
 		# update portfolio
 		self.__player.update()
 		self.__find_a_client()
-		print(f"{list(self.view_markets().values())}\n{self.__player}")
-		print(f"'b'+market name to buy\n's'+market name to sell")
+		
 
 	def __calculate_growth(self):
 		return round(random.uniform(0, 50), 2)
@@ -271,3 +272,4 @@ class GlobalEconomy:
 		if chance <= self.__player.view_rep():
 			c = Client(random.randrange(100, 100000), random.random(), random.randrange(1, 100), random.randrange(1, 100))
 			self.__player.accept_client(c)
+	

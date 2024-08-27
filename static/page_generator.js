@@ -26,7 +26,7 @@ export class PageGenerator{
          this.addClass(id, "vbox"); 
      } 
      addPara(text, id){ 
-         console.log(this._curr); 
+//          console.log(this._curr); 
          let node = document.createElement("p"); 
          node.innerText = text; 
          node.id = id; 
@@ -69,30 +69,32 @@ export class PageGenerator{
          img.alt = alt; 
          this.insert(img); 
      }
-	 addForm(id, action){
-		 let container = document.createElement("form")
-		 container.id = id
-		 container.action = action
-		 this.insert(container)
-		 this.addClass(id, "vbox")
-	 }
+	addForm(id, action){
+		let container = document.createElement("form")
+		container.id = id
+		container.action = action
+		this.insert(container)
+		this.addClass(id, "vbox")
+	}
      addTextInput(id, placeholder, callback){ 
          // add a text input element 
          let input = document.createElement("input"); 
          input.type = "text" 
          input.id = id 
          input.placeholder = placeholder 
-         input.onclick = callback 
+         input.onchange = ()=> callback(input.value)
          this.insert(input); 
-     } 
-     addNumberInput(id, callback){ 
-         // add a number input element 
-         input.type = "number" 
-         input.id = id 
-         let input = document.createElement("input"); 
-         input.onclick = callback 
-         this.insert(input); 
-     } 
+} 
+	addNumberInput(id, placeholder, callback){ 
+		// add a number input element 
+		let input = document.createElement("input"); 
+		input.type = "number" 
+		input.id = id 
+        input.placeholder = placeholder 
+        input.onchange = () => callback(input.value)
+        this.insert(input);
+	} 
+
      addCustomHTML(id, path){ 
          // grabs content from path and adds it to page 
          let node = document.createElement("div"); 
